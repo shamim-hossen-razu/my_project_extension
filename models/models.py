@@ -1,18 +1,17 @@
-# -*- coding: utf-8 -*-
-
-# from odoo import models, fields, api
+from odoo import models, fields, api
 
 
-# class my_project_extension(models.Model):
-#     _name = 'my_project_extension.my_project_extension'
-#     _description = 'my_project_extension.my_project_extension'
+class Team(models.Model):
+    _name = 'my_project_extension.team'
+    _description = 'Team'
 
-#     name = fields.Char()
-#     value = fields.Integer()
-#     value2 = fields.Float(compute="_value_pc", store=True)
-#     description = fields.Text()
-#
-#     @api.depends('value')
-#     def _value_pc(self):
-#         for record in self:
-#             record.value2 = float(record.value) / 100
+    name = fields.Char(string='Name', required=True)
+    description = fields.Text(string='Description')
+    member_ids = fields.Many2many('res.users', string='Members')
+    project_ids = fields.One2many('project.project', 'team_id', string='Projects')
+
+
+class Project(models.Model):
+    _inherit = 'project.project'
+
+    team_id = fields.Many2one('my_project_extension.team', string='Team')

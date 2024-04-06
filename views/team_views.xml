@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- my_project_extension/views/team_views.xml -->
+<odoo>
+    <data>
+        <!-- Define a form view for the Team model -->
+        <record id="view_team_form" model="ir.ui.view">
+            <field name="name">team.form</field>
+            <field name="model">my_project_extension.team</field>
+            <field name="arch" type="xml">
+                <form string="Team">
+                    <sheet>
+                        <!-- Fields outside of any page -->
+                        <group>
+                            <field name="name"/>
+                            <field name="description"/>
+                            <field name="member_ids" widget="many2many_tags"/>
+                        </group>
+                        <!-- Notebook for organizing fields -->
+                        <notebook>
+                            <!-- Page for project_ids -->
+                            <page string="Projects">
+                                <group>
+                                    <field name="project_ids"/>
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- Team Tree View -->
+         <data>
+        <!-- Define a tree view for the Team model -->
+        <record id="view_team_tree" model="ir.ui.view">
+            <field name="name">team.tree</field>
+            <field name="model">my_project_extension.team</field>
+            <field name="arch" type="xml">
+                <tree string="Teams">
+                    <field name="name"/>
+                    <field name="description"/>
+                </tree>
+            </field>
+        </record>
+    </data>
+
+        <!-- Team Action -->
+        <record id="action_team" model="ir.actions.act_window">
+            <field name="name">Teams</field>
+            <field name="res_model">my_project_extension.team</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <!-- Menu Item -->
+        <record id="menu_team" model="ir.ui.menu">
+            <field name="name">Team</field>
+            <field name="sequence" eval="11"/>
+            <field name="action" ref="action_team"/>
+            <field name="parent_id" ref="project.menu_project_config"/>
+            <field name="groups_id"
+                   eval="[(4, ref('project.group_project_manager'))]"/>
+        </record>
+
+    </data>
+</odoo>
