@@ -10,6 +10,12 @@
                         <option value="previous_week">Previous Week</option>
                         <option value="previous_month">Previous Month</option>
                     </select>
+                    <select class="o_dashboard_assignee_filter" onchange="odoo.my_project_extension.dashboard._onAssigneeFilterChange(event)">
+                        <option value="">All Assignees</option>
+                        <t t-foreach="assignees" t-as="assignee">
+                            <option t-att-value="assignee.id"><t t-esc="assignee.name"/></option>
+                        </t>
+                    </select>
                 </div>
                 <div class="o_dashboard_task_count">
                     <span class="o_dashboard_task_count_value">0</span>

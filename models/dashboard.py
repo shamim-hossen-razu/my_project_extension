@@ -7,6 +7,7 @@ class Dashboard(models.Model):
     _description = 'Dashboard'
 
     project_id = fields.Many2one('project.project', string='Project')
+    assignee_id = fields.Many2one('res.users', string='Assignee')
     filter_selection = fields.Selection([
         ('this_week', 'This Week'),
         ('this_month', 'This Month'),
@@ -59,15 +60,18 @@ class Dashboard(models.Model):
         end_of_month = start_of_month.replace(day=1)
         return start_of_month, end_of_month - timedelta(days=1)
 
-    @api.depends('project_id', 'start_date', 'end_date')
+    @api.depends('project_id', 'assignee_id', 'start_date', 'end_date')
     def _compute_task_count(self):
         for record in self:
             if record.project_id:
-                tasks = self.env['project.task'].search([
+                domain = [
                     ('project_id', '=', record.project_id.id),
                     ('create_date', '>=', record.start_date),
                     ('create_date', '<=', record.end_date)
-                ])
+                ]
+                if record.assignee_id:
+                    domain.append(('user_id', '=', record.assignee_id.id))
+                tasks = self.env['project.task'].search(domain)
                 record.task_count = len(tasks)
             else:
                 record.task_count = 0
@@ -75,10 +79,13 @@ class Dashboard(models.Model):
     @api.model
     def get_dashboard_data(self, filter_selection):
         start_date, end_date = self._compute_date_range_for_filter(filter_selection)
-        tasks = self.env['project.task'].search([
+        domain = [
             ('create_date', '>=', start_date),
             ('create_date', '<=', end_date)
-        ])
+        ]
+        if self.assignee_id:
+            domain.append(('user_id', '=', self.assignee_id.id))
+        tasks = self.env['project.task'].search(domain)
         return len(tasks)
 
     def _compute_date_range_for_filter(self, filter_selection):

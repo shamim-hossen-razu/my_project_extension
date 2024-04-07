@@ -10,6 +10,7 @@ odoo.define('my_project_extension.dashboard', function (require) {
         init: function (parent, context) {
             this._super.apply(this, arguments);
             this.filterSelection = 'this_week'; // Default filter selection
+            this.assigneeFilter = ''; // Default assignee filter
         },
 
         start: function () {
@@ -22,7 +23,7 @@ odoo.define('my_project_extension.dashboard', function (require) {
             this._rpc({
                 model: 'my_project_extension.dashboard',
                 method: 'get_dashboard_data',
-                args: [this.filterSelection],
+                args: [this.filterSelection, this.assigneeFilter], // Pass assignee filter to backend
             }).then(function (result) {
                 self.$('.o_dashboard_task_count_value').text(result.task_count);
             });
@@ -30,6 +31,11 @@ odoo.define('my_project_extension.dashboard', function (require) {
 
         _onFilterSelectionChange: function (ev) {
             this.filterSelection = $(ev.target).val();
+            this._renderDashboard();
+        },
+
+        _onAssigneeFilterChange: function (ev) {
+            this.assigneeFilter = $(ev.target).val();
             this._renderDashboard();
         },
     });
