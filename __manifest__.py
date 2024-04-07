@@ -22,6 +22,13 @@
     # any module necessary for this one to work correctly
     'depends': ['base',
                 'project',
+                'web',
+                ],
+    'qweb': [
+        'static/src/xml/dashboard.xml',
+    ],
+    'js': [
+        'static/src/js/dashboard.js',
     ],
 
     # always loaded
@@ -29,6 +36,7 @@
         'security/ir.model.access.csv',
         'views/project_view.xml',
         'views/team_views.xml',
+        'views/dashboard_menu.xml',
         'data/record_rules.xml',
     ],
     # only loaded in demonstration mode
