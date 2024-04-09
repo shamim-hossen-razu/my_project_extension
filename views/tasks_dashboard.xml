@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <record id="action_owl_project_task_dashboard" model="ir.actions.client">
+            <field name="name">Tasks Dashboard</field>
+            <field name="tag">owl.project_tasks_dashboard</field>
+        </record>
+
+        <menuitem id="menu_owl_project_task_dashboard"
+                  name="Task Dashboard"
+                  action="action_owl_project_task_dashboard"
+                  parent="project.menu_main_pm"
+                  sequence="10"/>
+    </data>
+</odoo>

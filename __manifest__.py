@@ -9,7 +9,7 @@
     'description': """
         Long description of module's purpose
     """,
-
+    'sequence': -1,
     'author': "My Company",
     'website': "https://www.yourcompany.com",
 
@@ -20,23 +20,21 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['base',
-                'project',
-                'web',
-                ],
-    'qweb': [
-        'static/src/xml/dashboard.xml',
-    ],
-    'js': [
-        'static/src/js/dashboard.js',
-    ],
+    'depends': ['base','project','web'],
+    'assets': {
+        'web.assets_backend': [
+            'my_project_extension/static/src/components/**/*.js',
+            'my_project_extension/static/src/components/**/*.xml',
+            'my_project_extension/static/src/components/**/*.scss',
+        ],
+    },
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
         'views/project_view.xml',
         'views/team_views.xml',
-        'views/dashboard_menu.xml',
+        'views/tasks_dashboard.xml',
         'data/record_rules.xml',
     ],
     # only loaded in demonstration mode
